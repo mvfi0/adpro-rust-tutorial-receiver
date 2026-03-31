@@ -85,5 +85,9 @@ This is the place for you to write reflections:
 ### Mandatory (Subscriber) Reflections
 
 #### Reflection Subscriber-1
+1. Why did we use RwLock<> and not Mutex<>?
+   RwLock allows multiple concurrent readers OR one exclusive writer. Since the notification list will be read frequently (listing notifications) but written to less often (receiving new notifications), RwLock is more efficient. Mutex would lock the entire data for both reads and writes, meaning only one thread could access it at a time even for reading, which is unnecessarily restrictive.
+2. Why doesn't Rust allow mutating static variables like Java does?
+   Rust enforces memory safety at compile time. Mutating a static variable from multiple threads without synchronization causes data races, which is undefined behavior. Java allows it but leaves thread safety to the programmer (which can cause bugs). Rust prevents this entirely by requiring static variables to be immutable by default. To mutate them, we must use thread-safe wrappers like lazy_static with RwLock or DashMap, which guarantee safe concurrent access at compile time.
 
 #### Reflection Subscriber-2
