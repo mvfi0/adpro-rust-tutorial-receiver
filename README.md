@@ -91,3 +91,9 @@ This is the place for you to write reflections:
    Rust enforces memory safety at compile time. Mutating a static variable from multiple threads without synchronization causes data races, which is undefined behavior. Java allows it but leaves thread safety to the programmer (which can cause bugs). Rust prevents this entirely by requiring static variables to be immutable by default. To mutate them, we must use thread-safe wrappers like lazy_static with RwLock or DashMap, which guarantee safe concurrent access at compile time.
 
 #### Reflection Subscriber-2
+1. Have you explored things outside the tutorial steps?
+   Yes, I explored src/lib.rs which contains the app configuration (APP_CONFIG), the REQWEST_CLIENT singleton for making HTTP requests, and helper functions like compose_error_response. It shows how the app initializes shared resources using lazy_static and how environment variables from .env are loaded into the config struct.
+2. How does Observer pattern ease plugging in more subscribers?
+   Observer pattern makes it easy to add more subscribers because we just need to spin up a new Receiver instance with a different port and name, then subscribe to a product type. The publisher doesn't need any code changes — it just iterates its subscriber list and notifies all of them. However, spawning more than one Main app instance would be harder because each instance would have its own in-memory subscriber list, so subscribers registered on one instance wouldn't exist on another.
+3. Have you tried making your own Tests or enhancing Postman documentation?
+   The Postman collection is helpful for quickly testing all endpoints. Adding test scripts in Postman (e.g., checking response status codes and body content) would be useful for automated testing. Setting up environment variables in Postman for different receiver ports makes it easy to switch between instances.
